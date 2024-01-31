@@ -1,0 +1,2 @@
+Host,Provider,IP(s),Status,Open Ports,Risk Rating,Findings,Description
+bot.trickest.com,cloud-amazon,3.72.141.174 => 3.72.77.174,Active,"80,443",,,
