@@ -1,0 +1,5 @@
+env
+bbot
+/scanner/static/diff
+/scanner/static/assets
+__pycache__
