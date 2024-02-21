@@ -32,6 +32,7 @@ def index():
 
 @app.errorhandler(Exception)
 def handle_exception(error):
+    print(error)
     response = {"message": str(error), "status": False}
     return jsonify(response)
 

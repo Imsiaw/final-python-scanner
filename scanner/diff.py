@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from utils.general import list_all_projects
+from utils.general import list_all_projects, list_projects_by_dir_name
 from config.config import diff_dir_path
 from utils.diff import diff_two_obj, diff_projects
 from datetime import datetime
@@ -136,6 +136,28 @@ def define_diff_file():
         file_path = os.path.join(diff_dir_path, parent)
 
         csv_file.save(os.path.join(file_path, f"diff_{formatted_date_time}.csv"))
+
+        return jsonify({"status": True, "data": None})
+
+    except FileExistsError as err:
+        raise Exception("The Project-Dir With The Same Name Exist!") from err
+
+    except FileNotFoundError as err:
+        raise Exception("The path is not exist!") from err
+
+    except Exception as err:
+        print(err)
+        raise Exception("Unknown Error!") from err
+
+
+# Diff The Projects
+@diff_route.route("/diff/<path:path>")
+def diff_project(path: str):
+    try:
+        projects = list_projects_by_dir_name(path.split("/")[0])
+        print(path, projects)
+
+        diff_projects(projects)
 
         return jsonify({"status": True, "data": None})
 

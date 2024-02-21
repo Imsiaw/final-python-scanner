@@ -1,10 +1,16 @@
-from config.config import bbot_dir_path, bbot_project_filename
-from flask import Blueprint, jsonify, request
+from config.config import (
+    bbot_dir_path,
+    bbot_project_ndjson,
+    bbot_project_data_filename,
+)
+from utils.parser import read_ndjson
+from flask import Blueprint, jsonify, request, send_file
 from utils.general import list_all_projects
 from datetime import datetime
 import pandas as pd
 import shutil
 import os
+import json
 
 # ------------------------------------------------------------
 
@@ -25,19 +31,24 @@ def get_projects():
 @project_route.route("/projects/<path:path>")
 def get_project_by_path(path: str):
     try:
-        csv_path = os.path.join(bbot_dir_path, path, bbot_project_filename)
-
-        csv_file = pd.read_csv(csv_path, index_col=None)
-
-        dict_file = csv_file.fillna(value="").to_dict("records")
-
-        return jsonify({"status": True, "data": dict_file})
+        ndjson_path = os.path.join(bbot_dir_path, path, bbot_project_ndjson)
+        d_path = os.path.join(bbot_dir_path, path, bbot_project_data_filename)
+        print(d_path)
+        if os.path.exists(d_path):
+            with open(d_path, "r") as r:
+                data = json.load(r)
+                return jsonify({"status": True, "data": data})
+        else:
+            data = read_ndjson(ndjson_path)
+            with open(d_path, "w") as w:
+                json.dump(data, w)
+            return jsonify({"status": True, "data": data})
 
     except FileNotFoundError as err:
         raise Exception("The file is not exist!") from err
 
     except Exception as err:
-        raise Exception("Unknown Error!") from err
+        raise Exception(err) from err
 
 
 # Delete The Project Directory
@@ -72,6 +83,30 @@ def delete_project_file(path: str):
 
     except Exception as err:
         raise Exception("Unknown Error!") from err
+
+
+# Update The Project File
+@project_route.route("/projects/file", methods=["POST"])
+def update_project_file():
+    try:
+
+        form_data = request.form
+
+        data = form_data["data"]
+        path = form_data["path"]
+
+        file_path = os.path.join(bbot_dir_path, path, bbot_project_data_filename)
+
+        with open(file_path, "w") as w:
+            json.dump(json.loads(data), w)
+
+        return jsonify({"status": True, "data": None})
+
+    except FileNotFoundError as err:
+        raise Exception("The file is not exist!") from err
+
+    except Exception as err:
+        raise Exception(err) from err
 
 
 # Define The Project Directory
@@ -129,3 +164,22 @@ def define_project_file():
     except Exception as err:
         print(err)
         raise Exception("Unknown Error!") from err
+
+
+# Get The asset-inventory.csv Base On Path
+@project_route.route("/project/screenshot/<path:path>")
+def get_project_screenshot(path: str):
+    try:
+        image_path = os.path.join(
+            bbot_dir_path,
+            path,
+        )
+        print(image_path)
+        print(os.path.exists(image_path))
+        return send_file(os.path.abspath(image_path))
+
+    except FileNotFoundError as err:
+        raise Exception("The file is not exist!") from err
+
+    except Exception as err:
+        raise Exception(err) from err

@@ -29,7 +29,8 @@ def list_all_projects():
             d
             for d in os.listdir(path)
             if os.path.isdir(os.path.join(path, d))
-            and "asset-inventory.csv" in os.listdir(f"{path}/{d}")
+            # and "asset-inventory.json" in os.listdir(f"{path}/{d}")
+            # and "asset-inventory.csv" in os.listdir(f"{path}/{d}")
         ]
         bbot_files.append(
             {
@@ -46,6 +47,19 @@ def list_all_projects():
             key=lambda x: datetime.strptime(x["label"], "%Y_%m_%d_%H%M%S"),
             reverse=True,
         )
-        for file in date_list[:3]:
-            path = f"{bbot_dir_path}/{dir['directory']}/{file}/asset-inventory.csv"
+        # for file in date_list[:3]:
+        # path = f"{bbot_dir_path}/{dir['directory']}/{file}/asset-inventory.csv"
     return bbot_files
+
+
+# ------------------------------------------------------------
+
+
+def list_projects_by_dir_name(dir_name: str):
+    bbot_directories = [
+        d
+        for d in os.listdir(os.path.join(bbot_dir_path, dir_name))
+        if os.path.isdir(os.path.join(bbot_dir_path, dir_name, d))
+    ]
+
+    return [{"label": dir_name, "children": [{"label": i} for i in bbot_directories]}]
