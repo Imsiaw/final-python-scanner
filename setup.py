@@ -14,9 +14,9 @@ scanner_path = os.path.join(project_path, "scanner")
 print(project_path, view_path)
 
 
-os.system(
-    f"cd {view_path} && npm run build && mv ./dist/index.html {scanner_path}/templates && mv  ./dist/assets/* {scanner_path}/static/assets && mv ./dist/vite.svg {scanner_path}/static/assets"
-)
+# os.system(
+#     f"cd {view_path} && npm run build && mv ./dist/index.html {scanner_path}/templates && mv  ./dist/assets/* {scanner_path}/static/assets && mv ./dist/vite.svg {scanner_path}/static/assets"
+# )
 
 
-os.system("python3 scanner/main.py")
+os.system(f"python3 {project_path}/scanner/main.py")

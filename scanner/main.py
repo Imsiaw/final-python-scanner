@@ -8,6 +8,13 @@ from utils.general import create_dir_if_not_exist
 
 # ------------------------------------------------------------
 
+sc_path = os.path.abspath(__file__)
+
+project_base_path = os.path.abspath(os.path.join(sc_path, "../../.."))
+
+bbot_dir_path = os.path.join(project_base_path, bbot_dir_path)
+
+
 create_dir_if_not_exist(bbot_dir_path)
 
 create_dir_if_not_exist(diff_dir_path)

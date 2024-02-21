@@ -8,6 +8,12 @@ import os
 
 # ------------------------------------------------------------
 
+sc_path = os.path.abspath(__file__)
+
+project_base_path = os.path.abspath(os.path.join(sc_path, "../../.."))
+
+bbot_dir_path = os.path.join(project_base_path, bbot_dir_path)
+
 
 def diff_two_obj(obj1, obj2):
     diff_list = []

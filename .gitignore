@@ -1,2 +1,10 @@
-node_modules
+env
+bbot
+/scanner/static/diff
+/scanner/static/assets
 __pycache__
+tmp.py
+/d2.json
+/ff.json
+/scanner/utils/t.py
+/scanner/utils/t2.py
