@@ -25,8 +25,17 @@ def diff_two_obj(obj1, obj2):
             if item1 == item2:
                 diff_obj[item1] = obj1[item1]
 
-                if item1 == "Marker" or item1 == "Changes":
+                if item1 == "Changes":
                     diff_obj[item1] = obj2[item1]
+                    continue
+                if item1 == "Marker":
+                    print(obj2[item1].strip())
+                    if obj2[item1].strip() != "" and obj1[item1].strip() == "":
+                        diff_obj[item1] = obj2[item1]
+                    elif obj2[item1].strip() == "" and obj1[item1].strip() != "":
+                        diff_obj[item1] = obj1[item1]
+                    else:
+                        diff_obj[item1] = obj2[item1]
                     continue
 
                 if item1 == "Technology":

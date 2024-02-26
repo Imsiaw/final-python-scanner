@@ -91,7 +91,24 @@ def merge_ipv4(arr: list):
     return "N/A" if len(ipv4) == 0 else SEPARATOR.join(ipv4)
 
 
+def merge_ipv4_v2(arr: list):
+    ipv4_list = [ipv4.get("resolved_hosts") for ipv4 in arr if "resolved_hosts" in ipv4]
+
+    flat_list = list(set([x for xs in ipv4_list for x in xs]))
+    ipv4 = [ip for ip in flat_list if is_ip(ip, 4)]
+
+    return "N/A" if len(ipv4) == 0 else SEPARATOR.join(ipv4)
+
+
 def merge_ipv6(arr: list):
+    ipv4_list = [ipv4.get("resolved_hosts") for ipv4 in arr if "resolved_hosts" in ipv4]
+    flat_list = list(set([x for xs in ipv4_list for x in xs]))
+    ipv4 = [ip for ip in flat_list if is_ip(ip, 6)]
+
+    return "N/A" if len(ipv4) == 0 else SEPARATOR.join(ipv4)
+
+
+def merge_ipv6_v2(arr: list):
     ipv4_list = [ipv4.get("resolved_hosts") for ipv4 in arr if "resolved_hosts" in ipv4]
     flat_list = list(set([x for xs in ipv4_list for x in xs]))
     ipv4 = [ip for ip in flat_list if is_ip(ip, 6)]
@@ -134,7 +151,7 @@ def merge_http_status(arr: list):
 
     http_status = [hs["data"].get("status_code", "N/A") for hs in arr]
     # return "N/A" if len(http_status) == 0 else ",".join(http_status)
-    return "N/A" if len(http_status) == 0 else http_status[0]
+    return "N/A" if len(http_status) == 0 else f"{http_status[0]}"
 
 
 def read_ndjson(path):
@@ -209,9 +226,15 @@ def read_ndjson(path):
                         domains[d["data"]] = {"id": d["id"], "tags": d["tags"]}
 
         #  Link the dns_name data to a subdomains
+        with open("do.json", "w") as ww:
+            json.dump(domains, ww)
+
         for domain in domains:
             domain_data = domains[domain]
             domain_id = domain_data["id"]
+
+            if domain_data.get("extra", None) is None:
+                domain_data["extra"] = []
 
             for nd_item in ndjson_data:
                 if (nd_item["type"] == "DNS_NAME" and nd_item["id"] == domain_id) or (
@@ -263,6 +286,8 @@ def read_ndjson(path):
         # with open("d2.json", "w") as w:
         #     json.dump(domains, w)
 
+    with open("do2.json", "w") as ww:
+        json.dump(domains, ww)
     ports = []
 
     for d in domains:
@@ -298,21 +323,27 @@ def read_ndjson(path):
             ]
             finding = get_finding(findings)
 
-            ipv6s = [ipv4 for ipv4 in domain_data["info"]]
-            if domain_data.get("extra", None) is not None:
-                i = [ipv4 for ipv4 in domain_data["extra"]]
-                ipv6s = [*ipv6s, *i]
+            # ipv4s = [ipv4 for ipv4 in domain_data["info"]]
+            # if domain_data.get("extra", None) is not None:
+            #     i = [ipv4 for ipv4 in domain_data["extra"]]
+            #     ipv4s = [*ipv4s, *i]
 
-            ipv4 = merge_ipv4(ipv6s)
+            # ipv4 = merge_ipv4(ipv4s)
 
-            ipv6s = [ipv6 for ipv6 in domain_data["info"]]
-            if domain_data.get("extra", None) is not None:
-                i = [ipv6 for ipv6 in domain_data["extra"]]
-                ipv6s = [*ipv6s, *i]
+            ipv4s = [ipv4 for ipv4 in domain_data["info"] if ipv4["module"] == "A"]
 
-            ipv6 = merge_ipv6(ipv6s)
-            # ipv6s = [ipv6 for ipv6 in domain_data["info"] if ipv6["module"] == "AAAA"]
+            ipv4 = merge_ipv4_v2(ipv4s)
+
+            # ipv6s = [ipv6 for ipv6 in domain_data["info"]]
+            # if domain_data.get("extra", None) is not None:
+            #     i = [ipv6 for ipv6 in domain_data["extra"]]
+            #     ipv6s = [*ipv6s, *i]
+
             # ipv6 = merge_ipv6(ipv6s)
+
+            ipv6s = [ipv6 for ipv6 in domain_data["info"] if ipv6["module"] == "AAAA"]
+
+            ipv6 = merge_ipv6_v2(ipv6s)
 
             ntcp = [
                 tcp for tcp in domain_data["info"] if tcp["type"] == "OPEN_TCP_PORT"
@@ -366,7 +397,7 @@ def read_ndjson(path):
                 for i in domain_data["info"]:
 
                     if i["source"] == tcp["id"] and i["type"] == "PROTOCOL":
-                        port = i["data"]["port"]
+                        port = f'{i["data"]["port"]}'
                         protocol = i["data"]["protocol"]
 
                     if i["source"] == tcp["id"] and i["type"] == "URL":
