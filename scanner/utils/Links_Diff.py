@@ -39,6 +39,12 @@ class Links_Diff:
             new_data_path = os.path.join(
                 base_path, date_list[0]["label"], links_table_filename
             )
+            new_base_path = os.path.join(base_path, date_list[0]["label"]).replace(
+                bbot_dir_path, ""
+            )
+            old_base_path = os.path.join(base_path, date_list[1]["label"]).replace(
+                bbot_dir_path, ""
+            )
 
             with open(old_data_path, "r") as df1_reader:
                 self.old_data = json.load(df1_reader)
@@ -50,7 +56,7 @@ class Links_Diff:
 
             diff_list = []
 
-            print("----------------Start Diffing----------------")
+            print("\n\n----------------Start Diffing----------------\n\n")
             for new_item in self.new_data:
                 new_Url = new_item["PUrl"]
                 is_repeated = False
@@ -58,7 +64,9 @@ class Links_Diff:
                     old_Url = old_item["PUrl"]
                     if new_Url == old_Url:
                         is_repeated = True
-                        diffed = self.diff_two_obj(old_item, new_item)
+                        diffed = self.diff_two_obj(
+                            old_item, new_item, old_base_path, new_base_path
+                        )
                         if len(diffed) != 0:
                             diff_list.append(*diffed)
                 if not is_repeated:
@@ -71,17 +79,22 @@ class Links_Diff:
 
             with open(new_data_path, "w") as ww:
                 json.dump(final_diff, ww)
+            print("\n\n----------------Ends Diffing----------------\n\n")
 
-    def diff_two_obj(self, old_item, new_item):
+    def diff_two_obj(self, old_item, new_item, old_path, new_path):
         diff_list = []
         diff_obj = {}
 
         is_diff = False
         for item1 in old_item:
+
             for item2 in new_item:
                 if item1 == item2:
 
                     if item1 == "Diff":
+                        if diff_obj.get("Diff", None) is None:
+                            print("its none")
+                            diff_obj[item1] = old_item[item1]
                         continue
 
                     diff_obj[item1] = old_item[item1]
@@ -109,9 +122,13 @@ class Links_Diff:
                         is_diff = True
 
                         if item1 == "Hash":
-                            diff_obj["Diff"] = (
-                                f'{old_item["Filename"]}||{new_item["Filename"]}'
+                            json_data = json.dumps(
+                                {
+                                    "old": {"f": old_item["Filename"], "p": old_path},
+                                    "new": {"f": new_item["Filename"], "p": new_path},
+                                }
                             )
+                            diff_obj["Diff"] = json_data
                         diff_obj[item1] = new_item[item1]
                         print(
                             f"found diff! {item1} old {old_item[item1]}  new {new_item[item1]}"

@@ -4,6 +4,7 @@ from config.config import (
     hostnames_table_filename,
     links_table_filename,
     screenshots_table_filename,
+    filedownload_dir_name,
 )
 from flask import Blueprint, jsonify, request, send_file
 from utils.general import list_all_projects
@@ -55,8 +56,7 @@ def get_project_by_path(path: str):
         ndjson_path = os.path.join(bbot_dir_path, path, bbot_project_ndjson)
         d_path = os.path.join(bbot_dir_path, path, TABLE_TYPE_MAPPER[table_type])
 
-        if os.path.exists(d_path):
-            # and table_type != "screenshots":
+        if os.path.exists(d_path) and table_type != "screenshots":
             with open(d_path, "r") as r:
                 data = json.load(r)
                 return jsonify({"status": True, "data": data})
@@ -77,6 +77,43 @@ def get_project_by_path(path: str):
             with open(d_path, "w") as w:
                 json.dump(data, w)
             return jsonify({"status": True, "data": data})
+
+    except FileNotFoundError as err:
+        raise Exception("The file is not exist!") from err
+
+    except Exception as err:
+        print(err)
+        raise Exception(err) from err
+
+
+# Get The assets
+@project_route.route("/project/asset/<path:path>")
+def get_asset_by_path(path: str):
+    try:
+        queries = request.args
+        filename = queries.get("filename", None)
+        url = queries.get("url", None)
+
+        dir_path = os.path.join(bbot_dir_path, path, filedownload_dir_name)
+
+        files = os.listdir(dir_path)
+        founded_file = []
+
+        for file in files:
+            s = file.replace("-", ".").replace("_", ".")
+            fs = filename.replace("-", ".").replace("_", ".")
+            print(s, fs)
+            if s.find(fs) != -1:
+                print(s, url)
+                if s.find(url) != -1:
+                    founded_file.append(file)
+
+        if len(founded_file) == 0:
+            return "Not Found 404", 404
+
+        file_path = os.path.join(dir_path, founded_file[0])
+
+        return send_file(file_path)
 
     except FileNotFoundError as err:
         raise Exception("The file is not exist!") from err
@@ -268,7 +305,6 @@ def define_project_file():
         raise Exception("Unknown Error!") from err
 
 
-# Get The asset-inventory.csv Base On Path
 @project_route.route("/project/screenshot/<path:path>")
 def get_project_screenshot(path: str):
     try:
