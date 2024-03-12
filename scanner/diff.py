@@ -1,7 +1,9 @@
-from flask import Blueprint, jsonify, request
 from utils.general import list_all_projects, list_projects_by_dir_name
-from config.config import diff_dir_path
 from utils.diff import diff_two_obj, diff_projects
+from flask import Blueprint, jsonify, request
+from utils.Links_Diff import Links_Diff
+from utils.Hostname_Diff import Hostname_Diff
+from config.config import diff_dir_path
 from datetime import datetime
 from uuid import uuid4
 import pandas as pd
@@ -154,10 +156,20 @@ def define_diff_file():
 @diff_route.route("/diff/<path:path>")
 def diff_project(path: str):
     try:
+
+        queries = request.args
+        table_type = queries.get("type", "hostnames")
+
         projects = list_projects_by_dir_name(path.split("/")[0])
         print(path, projects)
+        # return jsonify({"status": True})
 
-        diff_projects(projects)
+        if table_type == "links":
+            differ = Links_Diff()
+            differ.diff(projects)
+        if table_type == "hostnames":
+            differ = Hostname_Diff()
+            differ.diff(projects)
 
         return jsonify({"status": True, "data": None})
 

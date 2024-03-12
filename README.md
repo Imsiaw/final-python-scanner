@@ -1,1 +1,2 @@
-# python-react-scanner
+# Scanner-Server
+Scanner Flask Server

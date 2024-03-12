@@ -1,6 +1,6 @@
 from config.config import (
     bbot_dir_path,
-    bbot_project_data_filename,
+    hostnames_table_filename,
 )
 from datetime import datetime
 import json
@@ -89,10 +89,10 @@ def diff_projects(projects):
         # The newest project is df2
 
         df1_path = os.path.join(
-            base_path, date_list[1]["label"], bbot_project_data_filename
+            base_path, date_list[1]["label"], hostnames_table_filename
         )
         df2_path = os.path.join(
-            base_path, date_list[0]["label"], bbot_project_data_filename
+            base_path, date_list[0]["label"], hostnames_table_filename
         )
 
         df1 = None

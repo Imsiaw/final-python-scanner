@@ -1,5 +1,10 @@
 {
-  "dependencies": {
-    "@mui/lab": "^5.0.0-alpha.165"
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
