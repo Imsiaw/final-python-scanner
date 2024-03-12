@@ -55,7 +55,8 @@ def get_project_by_path(path: str):
         ndjson_path = os.path.join(bbot_dir_path, path, bbot_project_ndjson)
         d_path = os.path.join(bbot_dir_path, path, TABLE_TYPE_MAPPER[table_type])
 
-        if os.path.exists(d_path) and table_type != "screenshots":
+        if os.path.exists(d_path):
+            # and table_type != "screenshots":
             with open(d_path, "r") as r:
                 data = json.load(r)
                 return jsonify({"status": True, "data": data})
