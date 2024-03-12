@@ -161,7 +161,6 @@ cython_debug/
 
 
 env
-bbot
 /scanner/static/diff
 /scanner/static/assets
 tmp.py

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	<ShortName>balatarin</ShortName>
+	<Description>Search وبلاگ بالاترین - جایی برای حرف زدن در مورد بالاترین!</Description>
+	<Contact>help@wordpress.com</Contact>
+	<Url type="application/atom+xml" template="https://blog.balatarin.com/?s={searchTerms}&amp;feed=atom" />
+	<Url type="rss+xml" template="https://blog.balatarin.com/?s={searchTerms}&amp;feed=rss2" />
+	<Url type="text/html" template="https://blog.balatarin.com/?s={searchTerms}" method="GET" />
+	<Url type="application/opensearchdescription+xml" rel="self" template="https://blog.balatarin.com/osd.xml" />
+	<LongName>وبلاگ بالاترین</LongName>
+	<Image height="16" width="16" type="image/vnd.microsoft.icon">https://blog.balatarin.com/favicon.ico</Image>
+	<Image height="64" width="64" type="image/png">https://s-ssl.wordpress.com/i/logo/gray-white-transparent-64.png</Image>
+	<Query role="example" searchTerms="photography" />
+	<Tags>%d8%a8%d8%a7%d9%84%d8%a7%d8%aa%d8%b1%db%8c%d9%86 %d8%ad%d8%af%d9%86%d8%b5%d8%a7%d8%a8 %da%a9%d8%a7%d8%b1%d8%a8%d8%b1 %d9%85%d8%b9%d8%aa%d8%a8%d8%b1 %d9%88%d8%a8%d9%84%d8%a7%da%af%d8%b3%d8%aa%d8%a7%d9%86 %d8%a8%d9%84%d8%a7%da%af%d8%a8%d8%a7%d9%86 %d8%b2%db%8c%da%af%e2%80%8c%d8%b2%d8%a7%da%af %d9%81%d8%a7%d8%b1%d8%b3%db%8c %d9%85%d8%af%db%8c%d8%b1%db%8c%d8%aa-%da%a9%d8%a7%d8%b1%d8%a8%d8%b1 %d8%a7%d8%b9%d8%aa%d8%a8%d8%a7%d8%b1-%d8%a8%d8%a7%d9%84%d8%a7%db%8c%d8%a7%d8%b1%d9%87%d8%a7</Tags>
+	<Developer>Automattic</Developer>
+	<SyndicationRight>open</SyndicationRight>
+	<AdultContent>true</AdultContent>
+	<Language>fa-IR</Language>
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<InputEncoding>UTF-8</InputEncoding>
+	<moz:SearchForm>https://blog.balatarin.com</moz:SearchForm>
+</OpenSearchDescription>
