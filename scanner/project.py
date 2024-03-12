@@ -12,7 +12,6 @@ from datetime import datetime
 from utils.Links_Parser import Links_Parser
 from utils.Hostname_Parser import Hostname_parser
 from utils.Screenshot_Parser import Screenshot_Parser
-import pandas as pd
 import shutil
 import os
 import json

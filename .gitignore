@@ -161,18 +161,14 @@ cython_debug/
 
 
 env
-
+bbot
 /scanner/static/diff
 /scanner/static/assets
-
 tmp.py
-
 /d2.json
 /ff.json
-
 /scanner/utils/t.py
 /scanner/utils/t2.py
-
 do.json
 do2.json
 node_modules

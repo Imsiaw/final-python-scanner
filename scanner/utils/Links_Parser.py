@@ -42,7 +42,7 @@ class Links_Parser:
                     "Marker": "",
                     "Changes": "",
                     "Port": hash_port,
-                    "Hash": nd_item["data"]["hash"]["body_sha256"],
+                    "Hash": nd_item["data"]["hash"]["body_md5"],
                     "Filename": file_name,
                     "Url": http_response_url.replace(f":{hash_port}", ""),
                     "PUrl": http_response_url,

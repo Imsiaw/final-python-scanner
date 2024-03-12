@@ -93,7 +93,6 @@ class Links_Diff:
 
                     if item1 == "Diff":
                         if diff_obj.get("Diff", None) is None:
-                            print("its none")
                             diff_obj[item1] = old_item[item1]
                         continue
 
