@@ -12,6 +12,9 @@ project_base_path = os.path.abspath(os.path.join(sc_path, "../../.."))
 bbot_dir_path = os.path.join(project_base_path, bbot_dir_path)
 
 
+# -------------------------------------------------------------------------
+
+
 def create_dir_if_not_exist(path):
     if not os.path.exists(path):
         os.makedirs(path)

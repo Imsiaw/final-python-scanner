@@ -6,12 +6,20 @@ from config.config import (
 )
 from utils.Links_Parser import Links_Parser
 from utils.Hostname_Parser import Hostname_parser
-from uuid import uuid4
 import os
 import json
 
 
-# ------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+
+sc_path = os.path.abspath(__file__)
+
+project_base_path = os.path.abspath(os.path.join(sc_path, "../../.."))
+
+bbot_dir_path = os.path.join(project_base_path, bbot_dir_path)
+
+
+# -------------------------------------------------------------------------
 
 
 class Screenshot_Parser:

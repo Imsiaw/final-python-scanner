@@ -1,5 +1,4 @@
-from utils.general import list_all_projects, list_projects_by_dir_name
-from utils.diff import diff_two_obj, diff_projects
+from utils.general import list_projects_by_dir_name
 from flask import Blueprint, jsonify, request
 from utils.Links_Diff import Links_Diff
 from utils.Hostname_Diff import Hostname_Diff
@@ -170,27 +169,6 @@ def diff_project(path: str):
         if table_type == "hostnames":
             differ = Hostname_Diff()
             differ.diff(projects)
-
-        return jsonify({"status": True, "data": None})
-
-    except FileExistsError as err:
-        raise Exception("The Project-Dir With The Same Name Exist!") from err
-
-    except FileNotFoundError as err:
-        raise Exception("The path is not exist!") from err
-
-    except Exception as err:
-        print(err)
-        raise Exception("Unknown Error!") from err
-
-
-# Diff The All Projects
-@diff_route.route("/diff-all", methods=["POST"])
-def diff_all_projects():
-    try:
-        projects = list_all_projects()
-
-        diff_projects(projects)
 
         return jsonify({"status": True, "data": None})
 

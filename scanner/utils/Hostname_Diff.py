@@ -7,7 +7,16 @@ import json
 import os
 
 
-# ------------------------------------------------------------
+# -------------------------------------------------------------------------
+
+sc_path = os.path.abspath(__file__)
+
+project_base_path = os.path.abspath(os.path.join(sc_path, "../../.."))
+
+bbot_dir_path = os.path.join(project_base_path, bbot_dir_path)
+
+
+# -------------------------------------------------------------------------
 
 
 class Hostname_Diff:
